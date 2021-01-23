@@ -24,6 +24,10 @@ namespace RazorPagesWithVue
         public void ConfigureServices(IServiceCollection services)
         {
             services.AddControllersWithViews();
+
+            services.AddMvc().AddRazorOptions(opt => {
+                opt.ViewLocationFormats.Add("/Views/Shared/VueComponents/{0}.cshtml");
+            });
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
