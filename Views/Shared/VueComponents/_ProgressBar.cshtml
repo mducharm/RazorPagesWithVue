@@ -1,0 +1,29 @@
+<script type="text/html" id="progress-bar">
+        <div class="progress">
+            <div 
+                class="progress-bar" 
+                role="progressbar" 
+                :style="{ width: progressBarWidth}" 
+                :aria-valuenow="percent" 
+                aria-valuemin="0" 
+                aria-valuemax="100">
+            </div>
+        </div>
+</script>
+
+<script>
+    Vue.component("progress-bar", {
+        template: "#progress-bar",
+        props: {
+            percent: {
+                type: Number,
+                default: 0
+            }
+        },
+        computed: {
+            progressBarWidth() {
+                return `${this.percent}%`
+            }
+        },
+    });
+</script>
