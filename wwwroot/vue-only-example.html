@@ -1,0 +1,159 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <script src="https://cdn.jsdelivr.net/npm/vue@2.6.12/dist/vue.js"></script>
+    <title>Document</title>
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css" integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
+
+    
+    <script type="text/html" id="coffee-maker">
+        <div>
+            <div class="row">
+                <div class="col-sm">
+                    <img 
+                        @click="startMakingCoffee"
+                        src="coffee-machine.png" 
+                        alt="Coffee Machine" 
+                        class="coffee-machine"
+                        >
+                        <progress-bar :percent="percent"></progress-bar>
+                </div>
+            </div>
+            <img 
+                v-for="n in numberOfCoffeesMade"
+                :key="n"
+                src="coffee.png" 
+                alt="Coffee" 
+                class="coffee">
+        </div>
+    </script>
+    
+    <script>
+        Vue.component("coffee-maker", {
+            template: "#coffee-maker",
+            data() {
+                return {
+                    percent: 0,
+                    numberOfCoffeesMade: 0,
+                    interval: null
+                 }
+            },
+            computed: {
+                progressBarWidth() {
+                    return `${this.progressBarValue}%`
+                }
+            },
+            methods: {
+                startMakingCoffee() {
+                    if (this.interval) { 
+                        clearInterval(this.interval);
+                    }
+    
+                    this.percent = 0;
+    
+                    this.interval = setInterval(() => {
+                        if (this.percent >= 100) {
+                            this.numberOfCoffeesMade++;
+                            clearInterval(this.interval);
+                        } 
+                        this.percent += 5;
+                    }, 25);
+    
+                }
+            }
+        });
+    </script>
+    
+    <style>
+        .coffee-machine,
+        .progress {
+            width: 150px;
+        }
+    
+        .coffee {
+            width: 50px;
+        }
+    </style>
+        <script type="text/html" id="progress-bar">
+            <div class="progress">
+                <div 
+                    class="progress-bar no-transition bg-warning" 
+                    role="progressbar" 
+                    :style="{ width: progressBarWidth }" 
+                    :aria-valuenow="percent" 
+                    aria-valuemin="0" 
+                    aria-valuemax="100">
+                </div>
+            </div>
+    </script>
+    
+    <script>
+        Vue.component("progress-bar", {
+            template: "#progress-bar",
+            props: {
+                percent: {
+                    type: Number,
+                    default: 0
+                }
+            },
+            computed: {
+                progressBarWidth() {
+                    return `${this.percent}%`
+                }
+            },
+        });
+    </script>
+    
+    <style>
+        .no-transition {
+            -webkit-transition: none !important;
+            -moz-transition: none !important;
+            -o-transition: none !important;
+            -ms-transition: none !important;
+            transition: none !important;
+        }
+    </style>
+    
+</head>
+<body>
+    <header>
+        <nav class="navbar navbar-expand-sm navbar-toggleable-sm navbar-light bg-white border-bottom box-shadow mb-3">
+            <div class="container">
+                <a class="navbar-brand" href="/">Coffee Maker using Razor + Vue</a>
+                <button class="navbar-toggler" type="button" data-toggle="collapse" data-target=".navbar-collapse" aria-controls="navbarSupportedContent"
+                        aria-expanded="false" aria-label="Toggle navigation">
+                    <span class="navbar-toggler-icon"></span>
+                </button>
+                <div class="navbar-collapse collapse d-sm-inline-flex justify-content-between">
+                    <ul class="navbar-nav flex-grow-1">
+                    </ul>
+                </div>
+            </div>
+        </nav>
+    </header>
+
+    <div class="container">
+        <main role="main" class="pb-3">
+            
+            <div id="app">
+                <coffee-maker></coffee-maker>
+            </div>
+            
+        </main>
+    </div>
+
+    <script>
+        new Vue({
+            el: "#app",
+            data() {
+                return {
+                    hello: "Hello from Vue!"
+                }
+            }
+        });
+    </script>
+  
+</body>
+</html>
